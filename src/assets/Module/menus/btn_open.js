@@ -3,7 +3,7 @@
  * @createTime 2022.08.16
  */
 import {Utils} from '../utils'
-import {DB, COL, OpenDocument} from "../../Dmc/MongoConn"
+import {DB, COL, OpenDocument} from "../../../dmc/MongoConn"
 
 export function base_open(condition, callback) {
     OpenDocument(DB, COL, condition, {

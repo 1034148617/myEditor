@@ -30,11 +30,10 @@ import {Editor, Toolbar} from '@wangeditor/editor-for-vue'
 import {Utils} from '@/assets/Module/utils'
 import {base_open} from '@/assets/Module/menus/btn_open'
 import {url_photo_upload} from '@/assets/urls'
-import '../assets/Module/index.js'
+import '../assets/Module/index'
 import {renderDrow} from "@/assets/Module/menus/Drow/btn_switchDrow";
+import '../modules/index'
 
-// // 测试：多语言
-// i18nChangeLanguage('en')
 
 /***************************************编辑器设置*****************************************/
 const editorRef = shallowRef()
@@ -68,7 +67,7 @@ const toolbarConfig = {
       'menu-save',
       'menu-save-data',
       'menu-open',
-      'menu-insert-data',
+      'insertDataHolder',
       {
         key: "group-rows-operate",
         title: "多行操作",

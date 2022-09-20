@@ -46,7 +46,7 @@
 import axios from "axios";
 import {Utils} from '@/assets/Module/utils'
 import {url_load_data_source} from "@/assets/urls"
-import {insert_data_span} from "@/assets/Module/menus/btn_insertData"
+import {insertDataHolder} from "@/modules/data-holder/helper"
 import {insert_pdr_template} from "@/assets/Module/menus/Drow/btn_insertDrow";
 
 export default {
@@ -116,7 +116,7 @@ export default {
       const editor = window.editor
       if (editor == null) return;
       if (editor.selection == null) editor.restoreSelection();
-      insert_data_span(editor, row["GroupID"], row["FieldID"], row["FieldName"]);
+      insertDataHolder(editor, row["GroupID"], row["FieldID"], row["FieldName"]);
       this.onCancel();
     },
     insertDynamicRow() {

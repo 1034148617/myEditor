@@ -5,7 +5,7 @@
 import axios from 'axios'
 import {Utils} from '../utils'
 import {ElMessage} from 'element-plus'
-import {DB, COL, SaveDocument, OpenDocument} from "../../Dmc/MongoConn"
+import {DB, COL, SaveDocument, OpenDocument} from "../../../dmc/MongoConn"
 import {SlateTransforms, SlateNode} from '@wangeditor/editor'
 import {url_update_document_info, url_get_update_sql, url_update_data} from '@/assets/urls'
 

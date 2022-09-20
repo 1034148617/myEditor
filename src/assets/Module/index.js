@@ -7,13 +7,11 @@ import {Boot} from '@wangeditor/editor'
 import {ClearConf} from './menus/btn_clear'
 import {SaveConf, SaveDataConf} from './menus/btn_save'
 import {OpenConf} from './menus/btn_open'
-import {InsertDataConf} from './menus/btn_insertData'
 import {InsertDrowConf} from './menus/Drow/btn_insertDrow'
 import {CancelDrowConf} from './menus/Drow/btn_cancelDrow'
 import {SwitchDrowConf} from './menus/Drow/btn_switchDrow'
 import {InsertTableConf} from './menus/Table/btn_insertTable'
 /** 导入插件 */
-import {withData} from './plugins/withData'
 import {withPdr} from './plugins/withPdr'
 /** 导入自定义类型 */
 import {DynamicRowConf} from './renderElems/DynamicRow'
@@ -31,14 +29,12 @@ const module = {
         ClearConf,
         SaveConf, SaveDataConf,
         OpenConf,
-        InsertDataConf,
         InsertDrowConf,CancelDrowConf,SwitchDrowConf,
         InsertTableConf,
     ],
     // 渲染元素
     renderElems: [
         DynamicRowConf,
-        DataHolderConf,
     ],
     // 插入html
     elemsToHtml: [
@@ -49,7 +45,6 @@ const module = {
 Boot.registerModule(module)
 
 // 注册插件
-Boot.registerPlugin(withData)
 Boot.registerPlugin(withPdr)
 
 

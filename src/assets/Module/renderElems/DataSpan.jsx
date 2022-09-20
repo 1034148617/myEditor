@@ -13,9 +13,10 @@ function renderDataHolder(
     return h(
         'span',
         {
-            props: {},
-            className: 'class-data',
-            title: elemNode.group+" "+elemNode.field,
+            props: {
+                title: elemNode.group+" "+elemNode.field,
+            },
+            class: 'class-data',
             style: {},
             on: {
                 // mousedown: event => event.preventDefault(),
