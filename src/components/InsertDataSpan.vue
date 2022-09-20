@@ -48,6 +48,7 @@ import {Utils} from '@/assets/Module/utils'
 import {url_load_data_source} from "@/assets/urls"
 import {insertDataHolder} from "@/modules/data-holder/helper"
 import {insert_pdr_template} from "@/assets/Module/menus/Drow/btn_insertDrow";
+import {insertTemplatePdr} from "@/modules/dynamic-row/helper";
 
 export default {
   name: 'InsertDataSpanModal',
@@ -123,7 +124,8 @@ export default {
       const editor = window.editor
       if (editor == null) return;
       if (editor.selection == null) editor.restoreSelection();
-      insert_pdr_template(editor,this.activeNames,'')
+      // insert_pdr_template(editor,this.activeNames,'')
+      insertTemplatePdr(editor,this.activeNames,'')
       this.onCancel()
     }
   },

@@ -1,0 +1,17 @@
+.class-pdr {
+    display: block;
+    border: 1px solid rgba(149, 149, 199, 0.32);
+    border-radius: 4px 4px;
+    text-indent: 0;
+    background-color: rgba(149, 149, 199, 0.32);
+    padding: 10px;
+    font-size: 20px;
+}
+
+.class-pdr-content {
+    color: #2487ff;
+}
+
+.class-data:hover {
+    background-color: yellow;
+}
