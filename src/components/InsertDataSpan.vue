@@ -44,10 +44,9 @@
 
 <script>
 import axios from "axios";
-import {Utils} from '@/assets/Module/utils'
+import {getUrlParams} from '@/utils/util'
 import {url_load_data_source} from "@/assets/urls"
 import {insertDataHolder} from "@/modules/data-holder/helper"
-import {insert_pdr_template} from "@/assets/Module/menus/Drow/btn_insertDrow";
 import {insertTemplatePdr} from "@/modules/dynamic-row/helper";
 
 export default {
@@ -133,7 +132,7 @@ export default {
     this.model = this.config["model"];
     this.filter = this.config["filter"];
 
-    this.env_args = Utils.getUrlParams();
+    this.env_args = getUrlParams();
 
     const m = this;
 

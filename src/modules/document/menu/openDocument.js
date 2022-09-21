@@ -1,33 +1,7 @@
 /**
  * @description  打开按钮
- * @createTime 2022.08.16
+ * @createTime 2022.09.21
  */
-import {Utils} from '../utils'
-import {DB, COL, OpenDocument} from "../../../dmc/MongoConn"
-
-export function base_open(condition, callback) {
-    OpenDocument(DB, COL, condition, {
-        "_id": 0,
-        "DocumentID": 0,
-        "UpdateTime": 0,
-    }, (res) => {
-        let data = res["data"]["result"];
-        if (callback) callback(data);
-    })
-}
-
-export function open_documents(condition, callback) {
-    OpenDocument(DB, COL, {'$or':condition}, {
-        "_id": 0,
-        "Version": 0,
-        "DocumentID": 0,
-        "UpdateTime": 0,
-    }, (res) => {
-        let data = res["data"]["result"];
-        if (callback) callback(data);
-    })
-}
-
 class OpenMenu {
     constructor() {
         this.title = '打开'
@@ -54,12 +28,4 @@ class OpenMenu {
     }
 }
 
-export const OpenConf = {
-    key: 'menu-open',
-    factory() {
-        return new OpenMenu()
-    },
-}
-
-
-
+export default OpenMenu

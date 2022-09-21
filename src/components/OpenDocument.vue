@@ -38,7 +38,7 @@ import axios from "axios";
 import {SlateTransforms} from '@wangeditor/editor'
 import {url_open_document_info} from '@/assets/urls';
 import PreviewEditor from './PreviewEditor.vue';
-import {open_documents} from '@/assets/Module/menus/btn_open'
+import {open_documents} from '@/modules/document/helper'
 
 export default {
   name: "Modal",

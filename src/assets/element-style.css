@@ -15,3 +15,17 @@
 .class-data:hover {
     background-color: yellow;
 }
+
+.class-attachment {
+    position: relative;
+}
+
+.class-attachment-img{
+    margin-top: -10px;
+}
+
+.class-attachment-prompt {
+    position: absolute;
+    bottom: -10px;
+    left: 30%;
+}

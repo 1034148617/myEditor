@@ -11,7 +11,7 @@
 <script setup>
 import {Editor} from "@wangeditor/editor-for-vue";
 import {onBeforeUnmount, shallowRef, toRefs} from "vue";
-import {base_open} from "@/assets/Module/menus/btn_open";
+import {base_open} from "@/modules/document/helper";
 import {Transforms} from "slate";
 
 const editorRef = shallowRef()
