@@ -12,7 +12,6 @@ export function genAttachmentNode(filename,filetype,src){
         src: src,
         children: [{ text: '' }]
     }
-
 }
 
 export async function insertAttachment(editor, filename, filetype, src) {
@@ -25,7 +24,9 @@ export async function insertAttachment(editor, filename, filetype, src) {
 
     if (isCollapsed) {
         const DataNode = genAttachmentNode(filename, filetype, src)
-        Transforms.insertNodes(editor, DataNode)
+        Transforms.insertNodes(editor, [DataNode, {text:' '}])
     }
 
 }
+
+

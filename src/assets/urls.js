@@ -7,6 +7,12 @@ export var url_photo_upload = "http://192.168.1.78/develop/api/423AEF34F85345D7B
 // 3.文档信息更新接口
 export var url_update_document_info = "http://192.168.1.78/develop/api/34BDE5D1B620463897AE83589AFF1B27.ds"
 
+// 3.1 查看文档信息接口
+export var url_read_document_info = "http://192.168.1.78/develop/api/F2007224EDBE4B7BAF72548F9B94FEE3.ds"
+
+// 3.2 需求文档节点更新接口
+export var url_update_SRS_nodes = "http://192.168.1.78/develop/api/A730790CD0004DC89C9470AB8C8FC440.ds"
+
 // 4.加载数据源接口
 export var url_load_data_source = "http://192.168.1.78/develop/api/B02C79DCBC8C4167922F31FA5490DC87.ds"
 
@@ -16,4 +22,6 @@ export var url_get_data = "http://192.168.1.78/develop/api/E7CD7EB4A88F4EDFA847B
 // 6.数据回写
 export var url_get_update_sql = "http://192.168.1.78/develop/api/BE545F9832F64321AA44EC777E46F5A4.ds"
 export var url_update_data = "http://192.168.1.78/develop/api/08B848DD85BF42BAA26251002F3ABDA0.ds"
+
+
 

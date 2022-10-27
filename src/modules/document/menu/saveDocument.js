@@ -2,7 +2,10 @@
  * @description  保存按钮
  * @createTime 2022.08.15
  */
-import {base_save} from "../helper";
+import { base_save, SRS_save } from "../helper";
+import { restoreDataSpan } from "../../data-holder/helper"
+import { getUrlParams, NewID } from "../../../utils/util";
+
 
 class SaveMenu {
     constructor() {
@@ -24,7 +27,16 @@ class SaveMenu {
     }
 
     exec(editor) {
-        base_save(editor);
+        const params = getUrlParams()
+        const documentID = params["DocumentID"] || NewID(32)
+        if(documentID.indexOf("_SRS") > -1){
+            SRS_save(editor)
+        }else{
+            restoreDataSpan(editor, function (res) {
+                base_save(editor)
+            })
+        }
+
     }
 }
 

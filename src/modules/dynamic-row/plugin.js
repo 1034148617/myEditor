@@ -2,7 +2,7 @@
  * @description 自定义数据结构Dynamic Row插件
  * @CreateTime 2022.09.20
  */
-import {NewID} from "@/utils/util"
+import { NewID} from "@/utils/util"
 import { Editor, Transforms, Node as SlateNode, Element as SlateElement } from 'slate'
 import { IDomEditor, DomEditor } from '@wangeditor/core'
 

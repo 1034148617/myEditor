@@ -1,8 +1,7 @@
 <template>
   <div>
-    <el-table ref="multipleTableRef" :data="templateList" style="width: 100%" @selection-change="handleSelectionChange"
-              height="350px">
-      <el-table-column type="selection" width="55"></el-table-column>
+    <el-table ref="multipleTableRef" :data="templateList" style="width: 100%" height="350px" :key="tableKey">
+      <el-table-column type="index"/>
       <el-table-column prop="DocumentName" label="文档名" width="140"/>
       <el-table-column prop="DocumentType" label="文档类型" width="80"/>
       <el-table-column prop="Creator" label="创建者" width="90"/>
@@ -14,9 +13,10 @@
                            :disabled="version.row.latestVersion===1"/>
         </template>
       </el-table-column>
-      <el-table-column label="查看" width="100">
+      <el-table-column prop="chooseNodesNum" label="已选节点" width="50" sortable />
+      <el-table-column label="操作" width="100">
         <template #default="scoped">
-          <el-button type="info" @click="onPreview(scoped.row)">预览</el-button>
+          <el-button type="info" @click="onPreview(scoped.row)">选择</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -27,7 +27,13 @@
     </div>
 
     <el-dialog v-model="PreviewDialogVisible" :title="template.DocumentName" width="60%" :destroy-on-close="true">
-      <PreviewEditor :key="new Date().getTime()" :template="template" :isCheck="false" @hide="hidePreviewEditor()"/>
+      <PreviewEditor
+          :key="new Date().getTime()"
+          :template="template"
+          :isCheck="true"
+          @hide="hidePreviewEditor"
+          @confirm="chooseNewNodes"
+      />
     </el-dialog>
 
   </div>
@@ -38,7 +44,8 @@ import axios from "axios";
 import {SlateTransforms} from '@wangeditor/editor'
 import {url_open_document_info} from '@/assets/urls';
 import PreviewEditor from './PreviewEditor.vue';
-import {open_documents} from '@/modules/document/helper'
+import {new_Document} from '@/modules/document/helper'
+
 
 export default {
   name: "Modal",
@@ -48,6 +55,7 @@ export default {
   },
   data() {
     return {
+      tableKey: Math.random(),
       templateList: [], // 加载所有模板信息
       typeList: [],     // 文档类型，用于筛选
       creatorList: [],  // 创建者列表，用于筛选
@@ -63,16 +71,11 @@ export default {
     },
     onConfirm() {
       if (this.changeList.length > 0) {
-        open_documents(this.changeList, (res) => {
-          const editor = window.editor
-          if (editor) {
-            if (editor.selection === null) editor.restoreSelection();
-            SlateTransforms.insertNodes(editor, res);
-          }
-        });
+        this.$refs.multipleTableRef.clearSelection();
+        this.onCancel();
+        new_Document(this.changeList)
       }
-      this.$refs.multipleTableRef.clearSelection();
-      this.onCancel();
+
     },
     onVersionChange(value) {
       if (value.useVersion > value.latestVersion) {
@@ -91,15 +94,16 @@ export default {
     hidePreviewEditor(){
       this.PreviewDialogVisible = false;
     },
-    handleSelectionChange(val) {
-      this.changeList = [];
-      for (let i = 0; i < val.length; i++) {
-        let changed = {
-          "DocumentID": val[i]["DocumentID"],
-          "Version": val[i]["useVersion"]
+    chooseNewNodes(info){
+      this.changeList.push(info)
+
+      for (let i = 0; i < this.templateList.length; i++) {
+        if(this.templateList[i]["DocumentID"] === info["documentID"]){
+          this.templateList[i]["chooseNodesNum"] += info["result"].length
+          break
         }
-        this.changeList.push(changed);
       }
+      this.tableKey = Math.random()
     },
   },
   mounted() {
@@ -120,6 +124,10 @@ export default {
       }
 
       modal.templateList = result.data;
+
+      for (let i = 0; i < modal.templateList.length; i++) {
+        modal.templateList[i]["chooseNodesNum"] = 0;
+      }
 
       modal.typeList = Array.from(new Set(typeList))
 

@@ -6,9 +6,8 @@ import {SlateNode} from "@wangeditor/editor";
 import {Transforms} from "slate";
 import axios from "axios";
 import {ElMessage} from "element-plus";
-
 import {NewID, getNodeRow, getUrlParams} from '@/utils/util'
-import {url_get_data} from "@/assets/urls";
+import {url_get_data, url_get_update_sql, url_update_data} from "@/assets/urls";
 
 export function genDynamicRowContentNode(isTemplate, RowID, Content) {
     if (isTemplate) {
@@ -172,3 +171,59 @@ export function cancelPdr(editor) {
 
 }
 
+/**
+ * 回写动态行数据
+ * @param editor
+ */
+export function save_pdr_data(editor) {
+    const nodes = JSON.parse(JSON.stringify(editor.children));
+
+    let pdr_Did = [];
+
+    nodes.forEach(node => {
+        if (node["type"] === "pdr" && node["isTemplate"] === false && pdr_Did.indexOf(node["Did"]) === -1) {
+            pdr_Did.push(node["Did"]);
+        }
+    });
+
+    pdr_Did.forEach(Did => {
+        nodes.forEach(node => {
+            if (node["type"] === "pdr" && node["isTemplate"] === false && node["Did"] === Did) {
+                let dataSource = node["DataSource"];
+                let change_data_fields = [];
+
+                if (dataSource === undefined) {
+                    // 新数据
+                } else {
+                    for (let i = 0; i < node["children"].length; i++) {
+                        if (node["children"][i]["type"] === "data") {
+                            const pdr_data_node = node["children"][i];
+                            const pdr_data_content = SlateNode.string(pdr_data_node);
+                            if (pdr_data_node["value"] !== pdr_data_content &&
+                                pdr_data_content !== "") {
+                                dataSource[pdr_data_node["field"]] = pdr_data_content;
+                                change_data_fields.push(pdr_data_node["field"]);
+                            }
+                        }
+                    }
+
+                    change_data_fields.forEach(field => {
+                        const url_get_sql = url_get_update_sql + "?GroupID=" + node["group"] + "&FieldID=" + field;
+                        axios.get(url_get_sql, {}).then(function (res) {
+                            if (res["data"].length > 0) {
+                                let update_sql = res["data"][0]["Sql"];
+                                for (let key in dataSource) {
+                                    let reg = new RegExp("{" + key + "}", "g");
+                                    update_sql = update_sql.replace(reg, "'" + dataSource[key] + "'");
+                                }
+                                let params = new URLSearchParams();
+                                params.append("Sql", update_sql);
+                                axios.post(url_update_data, params);
+                            }
+                        });
+                    })
+                }
+            }
+        });
+    });
+}

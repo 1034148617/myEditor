@@ -1,3 +1,7 @@
+.class-table-active {
+    background-color: #e87b7b;
+}
+
 .class-pdr {
     display: block;
     border: 1px solid rgba(149, 149, 199, 0.32);
@@ -24,8 +28,16 @@
     margin-top: -10px;
 }
 
-.class-attachment-prompt {
-    position: absolute;
-    bottom: -10px;
-    left: 30%;
+
+.class-ptable-container {
+
 }
+
+.class-check-box {
+    margin-right: 5px;
+}
+
+.class-testcase {
+    background-color: #7ecfff;
+}
+

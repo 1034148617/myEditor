@@ -24,8 +24,7 @@ class InsertAttachment {
     }
 
     exec(editor) {
-        console.log("插入附件")
-        insertAttachment(editor,"test","docx","XXX")
+        insertAttachment(editor,"test","doc","http://www,baidu.com")
     }
 }
 

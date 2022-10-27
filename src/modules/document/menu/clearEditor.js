@@ -23,7 +23,7 @@ class ClearEditor {
 
     exec(editor) {
         editor.clear()
-
+        editor.history.undos = []
         //其他重置操作
         //
     }

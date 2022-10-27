@@ -2,7 +2,7 @@
  * @description  插入数据标签按钮
  * @createTime 2022.08.16
  */
-import {DomEditor} from "@wangeditor/core";
+import {insertDataSpanExec} from "../helper";
 
 class InsertDataHolder {
     constructor() {
@@ -24,21 +24,7 @@ class InsertDataHolder {
     }
 
     exec(editor) {
-        if (window.insertDataSpanModal) {
-            if (DomEditor.getSelectedNodeByType(editor, 'pdr') != null) {
-                const node = DomEditor.getSelectedNodeByType(editor, 'pdr')
-                window.insertDataSpanModal({
-                    "model": "data",
-                    "group": node["group"],
-                    "filter": ["10"]
-                })
-            } else {
-                window.insertDataSpanModal({
-                    "model": "data",
-                    "filter": ["10"]
-                })
-            }
-        }
+        insertDataSpanExec(editor)
     }
 }
 
