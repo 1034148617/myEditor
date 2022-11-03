@@ -4,7 +4,7 @@
       <div v-for="item in page_ds_group" :key="item.GroupID">
         <el-collapse-item :name="item.GroupID">
           <template #title>
-            {{ item.GroupName }}---{{ item.GroupType }}
+            {{ item.GroupName }}({{ item.GroupType }})
           </template>
           <div>
             <el-table

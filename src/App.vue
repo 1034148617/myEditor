@@ -32,22 +32,13 @@
       </el-col>
       <el-col :span="editorSpan">
         <!--   编辑器主体     ？-->
-        <ExtendEditor></ExtendEditor>
+        <BaseEditor></BaseEditor>
       </el-col>
     </el-row>
 
     <!-- 通用对话框组件   -->
-    <el-dialog v-model="isDialog" :title="dialogTitle" width="70%" center="center" :destroy-on-close="true">
-      <component :is="dialogModel" :key="new Date().getTime()" @hide="hideDialogModel()"/>
-    </el-dialog>
-
-    <!-- 选择数据标签对话框  -->
-    <el-dialog v-model="isInsertDataSpanModal" title="选择数据标签" width="55%" center="center" :destroy-on-close="true">
-      <InsertDataSpanModal
-          :key="new Date().getTime()"
-          :config="dataModalArgs"
-          @hide="hideInsertDataSpanComponent()"
-      />
+    <el-dialog v-model="isDialog" :title="dialogTitle" :width="dialogWidth" center="center" :destroy-on-close="true">
+      <component :is="dialogModel" :key="new Date().getTime()" :config="dataConfig" @hide="hideDialogModel"/>
     </el-dialog>
 
   </div>
@@ -55,12 +46,13 @@
 
 <script>
 import axios from "axios";
-import ExtendEditor from './components/ExtendedEditor.vue'
+import BaseEditor from './components/BaseEditor.vue'
 import OpenDocumentModal from './components/OpenDocument.vue'
 import InsertDataSpanModal from './components/InsertDataSpan.vue'
 import InsertTableModal from './components/InsertTable.vue'
 import ConcatDocumentModal from './components/ConcatDocument.vue'
 import TestCaseConfigModal from "./components/TestCaseConfig.vue";
+import UploadFileModel from './components/UploadFile.vue';
 import {getHeaderNodes} from "./modules/document/helper";
 import {url_read_document_info} from "./assets/urls";
 import {getUrlParams} from "./utils/util";
@@ -68,12 +60,13 @@ import {getUrlParams} from "./utils/util";
 export default {
   name: 'App',
   components: {
-    ExtendEditor,
-    OpenDocumentModal,
-    InsertDataSpanModal,
-    InsertTableModal,
-    ConcatDocumentModal,
-    TestCaseConfigModal
+    BaseEditor,
+    OpenDocumentModal,    // 打开文档对话框
+    InsertDataSpanModal,  // 插入数据标签对话框
+    InsertTableModal,     // 插入表格对话框
+    ConcatDocumentModal,  // 新建文档对话框
+    TestCaseConfigModal,  // 插入测试用例对话框
+    UploadFileModel       // 文件上传对话框
   },
   data() {
     return {
@@ -85,28 +78,23 @@ export default {
       catalogNodes: [],     // 目录节点
       documentInfo: [], // 文档信息节点
       // 对话框控制参数
-      isDialog: false,
       dialogModel: "",
+      isDialog: false,
       dialogTitle: "",
-      isInsertDataSpanModal: false,       // 控制数据标签插入对话框打开与关闭
-      dataModalArgs: {},      // 数据插入对话框配置参数
+      dialogWidth: "70%",
+      dataConfig: null,
     }
   },
   methods: {
-    openDialogModel(model, title) {
+    openDialogModel(model, title, width, argument) {
       this.dialogTitle = title
       this.dialogModel = model
+      this.dialogWidth = width || "70%"
+      this.dataConfig = argument
       this.isDialog = true
     },
     hideDialogModel() {
       this.isDialog = false;
-    },
-    insertDataSpanComponent(argument) {
-      this.dataModalArgs = argument
-      this.isInsertDataSpanModal = true
-    },
-    hideInsertDataSpanComponent() {
-      this.isInsertDataSpanModal = false
     },
     switchSideBar(){
       this.isSideBar = !this.isSideBar
@@ -141,7 +129,6 @@ export default {
   },
   mounted() {
     window.openDialogModel = this.openDialogModel;    // 普通js文件内通过window变量调用dialog
-    window.insertDataSpanModal = this.insertDataSpanComponent;
     window.switchSideBar = this.switchSideBar;
   }
 }

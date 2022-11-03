@@ -3,10 +3,10 @@
  * @createTime 2022.09.20
  */
 import axios from "axios";
-import { Editor, Path, Range, Transforms } from "slate";
+import {Editor, Path, Range, Transforms} from "slate";
 import {SlateEditor, SlateElement, SlateNode} from '@wangeditor/editor'
-import { getUrlParams } from '../../utils/util'
-import { url_get_data, url_load_data_source , url_update_data} from "../../assets/urls";
+import {getUrlParams} from '../../utils/util'
+import {url_get_data, url_load_data_source, url_update_data} from "../../assets/urls";
 import {DomEditor} from "@wangeditor/core";
 
 export function genDataSpanNode(group, field, text) {
@@ -15,15 +15,26 @@ export function genDataSpanNode(group, field, text) {
         group: group,
         field: field,
         value: text,
-        children: text ? [{ text }] : [],
+        children: text ? [{text}] : [],
     }
 }
 
+export function getDataSpanContent(group, field) {
+    let url_param = getUrlParams()
+}
+
+/**
+ * 插入数据标签
+ * @param editor
+ * @param group
+ * @param field
+ * @param text
+ */
 export async function insertDataHolder(editor, group, field, text) {
     if (editor == null) return;
 
     // 判断选区是否折叠
-    const { selection } = editor;
+    const {selection} = editor;
     if (selection == null) return;
     const isCollapsed = Range.isCollapsed(selection);
 
@@ -33,7 +44,7 @@ export async function insertDataHolder(editor, group, field, text) {
         const DataNode = genDataSpanNode(group, field, text)
         Transforms.insertNodes(editor, DataNode)
 
-        editor.insertFragment([{ text: ' ' }])  // 数据标签后置空格
+        editor.insertFragment([{text: ' '}])  // 数据标签后置空格
     } else {
         const selectedText = Editor.string(editor, selection) // 选中的文字
         editor.deleteFragment()
@@ -42,12 +53,11 @@ export async function insertDataHolder(editor, group, field, text) {
         editor.insertNode(DataNode)
 
     }
-
 }
 
 /**
  * 扫描编辑器中所有的data-holder并且将其渲染为数据
- * @param {*} editor 
+ * @param {*} editor
  */
 export function renderDataSpan(editor) {
     if (editor == null) return
@@ -94,11 +104,11 @@ export function renderDataSpan(editor) {
                     group: group,
                     field: field,
                     value: content,
-                    children: [{ text: content }]
+                    children: [{text: content}]
                 }
 
-                Transforms.insertNodes(editor, newNode, { at: path })
-                Transforms.removeNodes(editor, { at: Path.next(Path.next(path)) })
+                Transforms.insertNodes(editor, newNode, {at: path})
+                Transforms.removeNodes(editor, {at: Path.next(Path.next(path))})
             })
         }
     }
@@ -108,8 +118,8 @@ export function renderDataSpan(editor) {
 
 /**
  * 扫描编辑器中所有的data-holder并且将还原为模板
- * @param {*} editor 
- * @param {*} callback 
+ * @param {*} editor
+ * @param {*} callback
  */
 export function restoreDataSpan(editor, callback) {
     if (editor == null) return
@@ -133,7 +143,7 @@ export function restoreDataSpan(editor, callback) {
 
     axios.get(url_load_data_source).then(function (res) {
         const data_source = res["data"]["Field"]
-        
+
         for (let nodeEntry of nodeEntries) {
             const [node, path] = nodeEntry
 
@@ -148,10 +158,10 @@ export function restoreDataSpan(editor, callback) {
                         group: group,
                         field: field,
                         value: content,
-                        children: [{ text: content }]
+                        children: [{text: content}]
                     }
-                    Transforms.insertNodes(editor, newNode, { at: path })
-                    Transforms.removeNodes(editor, { at: Path.next(Path.next(path)) })
+                    Transforms.insertNodes(editor, newNode, {at: path})
+                    Transforms.removeNodes(editor, {at: Path.next(Path.next(path))})
                     break
                 }
             }
@@ -159,14 +169,14 @@ export function restoreDataSpan(editor, callback) {
 
         editor.restoreSelection()
 
-        if(callback) callback(res)
+        if (callback) callback(res)
     })
 
 }
 
 /**
  * 扫描编辑器中所有的data-holder并回写数据（未设置UpdateSql则跳过）
- * @param {*} editor 
+ * @param {*} editor
  */
 export function saveDataSpan(editor) {
     if (editor == null) return
@@ -196,26 +206,26 @@ export function saveDataSpan(editor) {
             const content = SlateNode.string(node);
 
             // 内容未变化则跳过
-            if(content === node.value) continue
+            if (content === node.value) continue
 
-            let field_info = data_source.filter((field)=>{
+            let field_info = data_source.filter((field) => {
                 return (field.GroupID === node.group && field.FieldID === node.field)
             })
 
-            if(field_info.length > 0)
+            if (field_info.length > 0)
                 field_info = field_info[0]
             else
                 continue
 
             let updateSql = field_info["SqlTemplate"]             // 获取到字段更新sql
 
-            if(updateSql == null) continue
+            if (updateSql == null) continue
 
             env_args["content"] = content
-            for(let key in env_args){
+            for (let key in env_args) {
                 const replace_holder = '{' + key + '}'
-                if(updateSql.indexOf(replace_holder) > -1){
-                    const newReg = new RegExp(replace_holder,"g")
+                if (updateSql.indexOf(replace_holder) > -1) {
+                    const newReg = new RegExp(replace_holder, "g")
                     updateSql = updateSql.replace(newReg, env_args[key])
                 }
             }
@@ -223,7 +233,7 @@ export function saveDataSpan(editor) {
             const params = new URLSearchParams()
             params.append("Sql", updateSql)
 
-            axios.post(url_update_data, params).then(function(res){
+            axios.post(url_update_data, params).then(function (res) {
                 //
             })
         }
@@ -240,17 +250,17 @@ export function saveDataSpan(editor) {
  * 用于插入数据标签按钮功能调用的函数（同时用于右键菜单）
  * @param editor
  */
-export function insertDataSpanExec(editor){
-    if (window.insertDataSpanModal) {
+export function insertDataSpanExec(editor) {
+    if (window.openDialogModel) {
         if (DomEditor.getSelectedNodeByType(editor, 'pdr') != null) {
             const node = DomEditor.getSelectedNodeByType(editor, 'pdr')
-            window.insertDataSpanModal({
+            window.openDialogModel("InsertDataSpanModal", "插入数据标签", "70%", {
                 "model": "data",
                 "group": node["group"],
                 "filter": ["10"]
             })
         } else {
-            window.insertDataSpanModal({
+            window.openDialogModel("InsertDataSpanModal", "插入数据标签", "70%", {
                 "model": "data",
                 "filter": ["10"]
             })

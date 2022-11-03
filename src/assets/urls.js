@@ -12,6 +12,8 @@ export var url_read_document_info = "http://192.168.1.78/develop/api/F2007224EDB
 
 // 3.2 需求文档节点更新接口
 export var url_update_SRS_nodes = "http://192.168.1.78/develop/api/A730790CD0004DC89C9470AB8C8FC440.ds"
+export var url_update_TC_nods = "http://192.168.1.78/develop/api/B85A07E7DABD4799B33655E73A9B10CC.ds"
+export var url_read_SRS_nodes = "http://192.168.1.78/develop/api/4A95FB73B27F41238271CF9FE5C9ABC5.ds"
 
 // 4.加载数据源接口
 export var url_load_data_source = "http://192.168.1.78/develop/api/B02C79DCBC8C4167922F31FA5490DC87.ds"

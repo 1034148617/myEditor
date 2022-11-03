@@ -24,7 +24,9 @@ class InsertAttachment {
     }
 
     exec(editor) {
-        insertAttachment(editor,"test","doc","http://www,baidu.com")
+        if(window.openDialogModel){
+            window.openDialogModel("UploadFileModel", "文件上传", "40%")
+        }
     }
 }
 

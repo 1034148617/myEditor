@@ -23,8 +23,8 @@ class InsertDynamicRow {
     }
 
     exec(editor) {
-        if (window.insertDataSpanModal) {
-            window.insertDataSpanModal({
+        if (window.openDialogModel) {
+            window.openDialogModel("InsertDataSpanModal", "插入动态行", "70%", {
                 "model": "drow",
                 "filter": ["20"]
             })
